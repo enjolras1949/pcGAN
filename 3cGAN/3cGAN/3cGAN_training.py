@@ -41,6 +41,7 @@ if __name__ == '__main__':
     criterion_GAN = torch.nn.MSELoss()
     criterion_cycle = torch.nn.MSELoss()
     criterion_identity = torch.nn.L1Loss()
+    criterion_pixelwise = torch.nn.L1Loss()
 
     cuda = torch.cuda.is_available()
     input_shape = (opt.channels, opt.img_height, opt.img_width)
