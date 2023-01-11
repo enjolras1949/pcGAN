@@ -39,25 +39,23 @@ if __name__ == '__main__':
 
     # Losses
     criterion_GAN = torch.nn.MSELoss()
-    criterion_cycle = torch.nn.MSELoss()
-    criterion_identity = torch.nn.L1Loss()
     criterion_pixelwise = torch.nn.L1Loss()
 
     cuda = torch.cuda.is_available()
     input_shape = (opt.channels, opt.img_height, opt.img_width)
     # Initialize generator and discriminator
-    G_AB = GeneratorResNet(input_shape, opt.n_residual_blocks)
-    G_BA = GeneratorResNet(input_shape, opt.n_residual_blocks)
-    G_CB = GeneratorResNet(input_shape, opt.n_residual_blocks)
-    G_BC = GeneratorResNet(input_shape, opt.n_residual_blocks)
-    G_AC = GeneratorResNet(input_shape, opt.n_residual_blocks)
-    G_CA = GeneratorResNet(input_shape, opt.n_residual_blocks)
-    D_B1 = Discriminator(input_shape)
-    D_A2 = Discriminator(input_shape)
-    D_B3 = Discriminator(input_shape)
-    D_C4 = Discriminator(input_shape)
-    D_C5 = Discriminator(input_shape)
-    D_A6 = Discriminator(input_shape)
+    G_AB = GeneratorUNet()
+    G_BA = GeneratorUNet()
+    G_CB = GeneratorUNet()
+    G_BC = GeneratorUNet()
+    G_AC = GeneratorUNet()
+    G_CA = GeneratorUNet()
+    D_B1 = Discriminator()
+    D_A2 = Discriminator()
+    D_B3 = Discriminator()
+    D_C4 = Discriminator()
+    D_C5 = Discriminator()
+    D_A6 = Discriminator()
 
     if cuda:
         G_AB = G_AB.cuda()
@@ -75,8 +73,7 @@ if __name__ == '__main__':
         D_A6 = D_A6.cuda()
 
         criterion_GAN.cuda()
-        criterion_cycle.cuda()
-        criterion_identity.cuda()
+        criterion_pixelwise.cuda()
 
     if opt.epoch != 0:
         # Load pretrained models
