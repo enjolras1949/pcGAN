@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jan 11 22:19:56 2023
-
-@author: luguo
-"""
-
 if __name__ == '__main__':
 
     import argparse
@@ -310,4 +302,3 @@ if __name__ == '__main__':
             torch.save(D_AB.state_dict(), "saved_models/%s-%s/%s-%s-D_B1-%dep.pth" % (opt.network_name, opt.training_dataset, opt.network_name,opt.training_dataset, epoch))
             torch.save(D_CB.state_dict(), "saved_models/%s-%s/%s-%s-D_A2-%dep.pth" % (opt.network_name, opt.training_dataset, opt.network_name,opt.training_dataset, epoch))
             torch.save(D_AC.state_dict(), "saved_models/%s-%s/%s-%s-D_B3-%dep.pth" % (opt.network_name, opt.training_dataset, opt.network_name, opt.training_dataset, epoch))
-           
