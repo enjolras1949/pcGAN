@@ -1,3 +1,4 @@
+
 if __name__ == '__main__':
 
     import argparse
@@ -28,7 +29,6 @@ if __name__ == '__main__':
     parser.add_argument("--channels", type=int, default=1, help="number of image channels")
     parser.add_argument("--sample_interval", type=int, default=1, help="interval between saving generator outputs")
     parser.add_argument("--checkpoint_interval", type=int, default=1, help="interval between saving model checkpoints")
-    
     
     parser.add_argument("--lambda_merging", type=float, default=10, help="scaling factor for the new loss")
     parser.add_argument("--textfile_training_results_interval", type=int, default=50, help="textfile_training_results_interval")
@@ -190,7 +190,7 @@ if __name__ == '__main__':
             loss_pixel = (loss_pixel_AB + loss_pixel_CB + loss_pixel_AC) / 3
           
             # Total loss
-            loss_G = loss_GAN + opt.lambda_pixel * loss_pixel
+            loss_G = loss_GAN + lambda_pixel * loss_pixel
             loss_G.backward()
             optimizer_G.step()
 
@@ -204,7 +204,7 @@ if __name__ == '__main__':
             pred_real_ABt= D_AB(real_B,real_A)
             loss_real = criterion_GAN(pred_real_ABt,valid)
             # Fake loss (on batch of previously generated samples)
-            pred_fake_ABt = D_AB(fake_B.detach(),real_A)
+            pred_fake_ABt = D_AB(fake_AB.detach(),real_A)
             loss_fake = criterion_GAN(pred_fake_ABt,fake)
         
             # Total loss
@@ -223,7 +223,7 @@ if __name__ == '__main__':
             pred_real_CBt= D_CB(real_B,real_C)
             loss_real = criterion_GAN(pred_real_CBt,valid)
             # Fake loss (on batch of previously generated samples)
-            pred_fake_CBt = D_CB(fake_B.detach(),real_C)
+            pred_fake_CBt = D_CB(fake_CB.detach(),real_C)
             loss_fake = criterion_GAN(pred_fake_CBt,fake)
         
             # Total loss
@@ -242,7 +242,7 @@ if __name__ == '__main__':
             pred_real_ACt= D_AC(real_C,real_A)
             loss_real = criterion_GAN(pred_real_ACt,valid)
             # Fake loss (on batch of previously generated samples)
-            pred_fake_ACt = D_AC(fake_C.detach(),real_A)
+            pred_fake_ACt = D_AC(fake_AC.detach(),real_A)
             loss_fake = criterion_GAN(pred_fake_ACt,fake)
         
             # Total loss
@@ -302,3 +302,4 @@ if __name__ == '__main__':
             torch.save(D_AB.state_dict(), "saved_models/%s-%s/%s-%s-D_B1-%dep.pth" % (opt.network_name, opt.training_dataset, opt.network_name,opt.training_dataset, epoch))
             torch.save(D_CB.state_dict(), "saved_models/%s-%s/%s-%s-D_A2-%dep.pth" % (opt.network_name, opt.training_dataset, opt.network_name,opt.training_dataset, epoch))
             torch.save(D_AC.state_dict(), "saved_models/%s-%s/%s-%s-D_B3-%dep.pth" % (opt.network_name, opt.training_dataset, opt.network_name, opt.training_dataset, epoch))
+           
