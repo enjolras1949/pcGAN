@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jan 12 20:47:49 2023
+
+@author: luguo
+"""
+
 import glob
 import random
 import os
@@ -21,6 +29,7 @@ class ImageDataset(Dataset):
         self.files_A = sorted(glob.glob(os.path.join(root, "A") + "/*.*"))
         self.files_B = sorted(glob.glob(os.path.join(root, "B") + "/*.*"))
         self.files_C = sorted(glob.glob(os.path.join(root, "C") + "/*.*"))
+        self.files_D = sorted(glob.glob(os.path.join(root, "D") + "/*.*"))
 
 
     def __getitem__(self, index):
@@ -40,7 +49,7 @@ class ImageDataset(Dataset):
 
         image_C = Image.open(self.files_C[index % len(self.files_C)])
 
-
+        image_D = Image.open(self.files_D[index % len(self.files_D)])
         # Banach modified 20/04/20 - so that we estimate a grayscale depth map
         # if image_B.mode != "RGB":
         #    image_B = to_rgb(image_B)
@@ -53,7 +62,8 @@ class ImageDataset(Dataset):
         item_A = self.transform(image_A)
         item_B = self.transform(image_B)
         item_C = self.transform(image_C)
-        return {"A": item_A, "B": item_B, "C": item_C}
+        item_D = self.transform(image_D)
+        return {"A": item_A, "B": item_B, "C": item_C, "D": item_D}
 
     def __len__(self):
-        return max(len(self.files_A), len(self.files_B), len(self.files_C))
+        return max(len(self.files_A), len(self.files_B), len(self.files_C), len(self.files_D))
