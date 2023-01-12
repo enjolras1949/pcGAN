@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jan 11 22:19:56 2023
+
+@author: luguo
+"""
 
 if __name__ == '__main__':
 
@@ -42,7 +49,6 @@ if __name__ == '__main__':
     # Losses
     criterion_GAN = torch.nn.MSELoss()
     criterion_pixelwise = torch.nn.L1Loss()
-    
     #Loss weight of L1 pixel-wise loss between translated image and real image
     lambda_pixel = 100
 
@@ -188,9 +194,14 @@ if __name__ == '__main__':
             loss_pixel_AC = criterion_pixelwise(fake_AC,real_C)
             
             loss_pixel = (loss_pixel_AB + loss_pixel_CB + loss_pixel_AC) / 3
-          
+            
+            # merging loss:
+            recov_2 = G_CB(G_AC(real_A))
+            recov_1 = G_AB(real_A)
+            loss_merging = criterion_GAN(recov_1, recov_2)
+            
             # Total loss
-            loss_G = loss_GAN + lambda_pixel * loss_pixel
+            loss_G = loss_GAN + lambda_pixel * loss_pixel + opt.lambda_merging * loss_merging
             loss_G.backward()
             optimizer_G.step()
 
